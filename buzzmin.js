@@ -19,9 +19,9 @@ $(document).bind("mobileinit", function(){
 				items.push('<li id="' + key + '"><a href="#detail-' + key + '">' + key + '</a></li>');
 
 				var detail_page = '\
-				<div data-role="page" data-theme="b" id="detail-' + key + '">\
+				<div data-role="page" data-theme="b" id="detail-' + key + '" data-url="detail-' + key + '">\
       		<div data-role="header">\
-      			<h1>' + val + '</h1>\
+      			<h1>' + key + '</h1>\
       		</div>\
       		<div data-role="content">\
       			<div data-role="fieldcontain">\
