@@ -6,7 +6,7 @@ if (window.location.hash) {
   window.location.pathname;
 }
 
-$(document).bind("mobileinit", function(){
+$(document).bind("ready", function(){
 	var buzzwords = window.localStorage.getItem('buzzwords');
 	
 	if(buzzwords) {
@@ -26,8 +26,6 @@ $(document).bind("mobileinit", function(){
 	}
 
 	function render(data) {
-		console.log(data);
-		
 		var items = [];
 
     $.each(data, function(key, val) {
