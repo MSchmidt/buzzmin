@@ -11,8 +11,6 @@ $(document).bind("mobileinit", function(){
     url: 'http://buzzwords.tladesignz.com/data.pl',
     dataType: 'jsonp',
     success: function(data) {
-      console.log('...');
-
       var items = [];
 
       $.each(data, function(key, val) {
@@ -31,7 +29,7 @@ $(document).bind("mobileinit", function(){
                  }).slice(0, 5);
                  $.each(reduced_val, function(key2, val2){
                   detail_page += '\
-                  <input type="checkbox" name="checkbox-' + key2 +'" id="checkbox-' + key2 + '" />\
+                  <input type="checkbox" name="checkbox-' + key2 +'" id="checkbox-' + key2 + '" data-group="' + key + '" />\
                   <label for="checkbox-' + key2 + '" data-theme="c">' + val2 + '</label>';
                 });
               detail_page += '</fieldset>\
@@ -45,6 +43,14 @@ $(document).bind("mobileinit", function(){
       });
       $(items.join('')).appendTo('#mainlist');
       $('#mainlist').listview('refresh');
+    }
+  });
+
+  $('input[type="checkbox"]').live('change', function(e){
+    if ($('input[data-group=' + $(this).attr('data-group') + ']:checked').length == 5){
+      // play sound on bingo - add your sound file and uncomment next 2 lines
+      //$('#soundContainer').attr('src', 'music.mp3');
+      //document.getElementById('soundContainer').play();
     }
   });
 });
