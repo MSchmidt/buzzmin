@@ -1,8 +1,8 @@
 if (window.location.hash) {
   window.location.href =
   window.location.protocol + '//' +
-  window.location.host + ':' +
-  window.location.port +
+  window.location.host +
+  (window.location.port ? ':' + window.location.port : '') +
   window.location.pathname;
 }
 
