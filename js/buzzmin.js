@@ -7,26 +7,26 @@ if (window.location.hash) {
 }
 
 $(document).bind("ready", function(){
-	var buzzwords = window.localStorage.getItem('buzzwords');
-	
-	if(buzzwords) {
-		console.log('from storage');
-		render(JSON.parse(buzzwords));
-	}
-	else {
-		$.ajax({
-	    url: 'http://buzzwords.tladesignz.com/data.pl',
-	    dataType: 'jsonp',
-	    success: function(data) {
-		    console.log('from net');
-				window.localStorage.setItem('buzzwords', JSON.stringify(data));
-				render(data);
-			}
-	  });
-	}
+  var buzzwords = window.localStorage.getItem('buzzwords');
 
-	function render(data) {
-		var items = [];
+  if(buzzwords) {
+    console.log('from storage');
+    render(JSON.parse(buzzwords));
+  }
+  else {
+    $.ajax({
+      url: 'http://buzzwords.tladesignz.com/data.pl',
+      dataType: 'jsonp',
+      success: function(data) {
+        console.log('from net');
+        window.localStorage.setItem('buzzwords', JSON.stringify(data));
+        render(data);
+      }
+    });
+  }
+
+  function render(data) {
+    var items = [];
 
     $.each(data, function(key, val) {
       items.push('<li id="' + key + '"><a href="#detail-' + key + '">' + key + '</a></li>');
