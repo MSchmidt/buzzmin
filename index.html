@@ -5,17 +5,42 @@
   <title>Buzzmin</title>
   <link rel="stylesheet" href="css/jquery.mobile-1.0a4.1.min.css" />
   <script src="js/jquery-1.6.1.min.js"></script>
-  <script src="js/buzzmin.js" type="text/javascript" charset="utf-8"></script>
   <script src="js/jquery.mobile-1.0a4.1.min.js"></script>
+  <script src="js/ICanHaz.js"></script>
+  <script src="js/buzzmin.js"></script>
 </head>
 <body>
   <div data-role="page" data-theme="b" id="home"> 
     <div data-role="header"><h1>Buzzmin</h1></div> 
     <div data-role="content">
-      <ul id="mainlist" data-role="listview" data-inset="true" data-theme="a"></ul>
+      <ul id="mainlist" data-role="listview" data-inset="true" data-theme="a">
+        <script id="menu_item_tmpl" type="text/html">
+          <li id="{{category}}"><a href="#detail-{{category}}">{{category}}</a></li>
+        </script>
+      </ul>
     </div> 
     <div data-role="footer"><h4>&copy; A. Alfarè &amp; M. Schmidt</h4></div> 
   </div>
-  <audio id="soundContainer" style="display: none;"></audio>
+  <script id="page_tmpl" type="text/html">
+    <div data-role="page" data-theme="b" id="detail-{{category}}" data-url="detail-{{category}}">
+      <div data-role="header">
+        <h1>{{category}}</h1>
+      </div>
+      <div data-role="content">
+        <div data-role="fieldcontain">
+          <fieldset data-role="controlgroup">
+            {{#words}}
+              <input type="checkbox" name="checkbox-{{word_key}}" id="checkbox-{{word_key}}" data-group="{{category}}" />
+              <label for="checkbox-{{word_key}}" data-theme="c">{{word}}</label>
+            {{/words}}
+          </fieldset>
+        </div>
+      </div>
+      <div data-role="footer">
+        <h4>&copy; A. Alfarè &amp; M. Schmidt</h4>
+      </div>
+    </div>
+  </script>
+  <audio id="soundContainer" src="music.mp3" style="display: none;"></audio>
 </body>
 </html>

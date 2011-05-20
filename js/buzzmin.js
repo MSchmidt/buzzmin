@@ -1,3 +1,4 @@
+/*global $, window, document, ich */
 if (window.location.hash) {
   window.location.href =
   window.location.protocol + '//' +
@@ -6,11 +7,36 @@ if (window.location.hash) {
   window.location.pathname;
 }
 
-$(document).bind("ready", function(){
+$(document).bind('ready', function() {
+  function render(data) {
+    var categories, pages = '';
+
+    $.each(data, function(key, val) {
+      categories += ich.menu_item_tmpl({category: key}, true);
+
+      var random_five = val.sort(function(){
+        return Math.round(Math.random())-0.5;
+      }).slice(0, 5);
+
+      var words = [];
+      $.each(random_five, function(key2, val2){
+        words.push({
+          word_key: key2,
+          word: val2
+        });
+      });
+
+      pages += ich.page_tmpl({category: key, words: words}, true);
+    });
+
+    $(categories).appendTo('#mainlist');
+    $(pages).appendTo('body');
+    $('#mainlist').listview('refresh');
+  }
+
   var buzzwords = window.localStorage.getItem('buzzwords');
 
   if(buzzwords) {
-    console.log('from storage');
     render(JSON.parse(buzzwords));
   }
   else {
@@ -18,53 +44,16 @@ $(document).bind("ready", function(){
       url: 'http://buzzwords.tladesignz.com/data.pl',
       dataType: 'jsonp',
       success: function(data) {
-        console.log('from net');
         window.localStorage.setItem('buzzwords', JSON.stringify(data));
         render(data);
       }
     });
   }
 
-  function render(data) {
-    var items = [];
-
-    $.each(data, function(key, val) {
-      items.push('<li id="' + key + '"><a href="#detail-' + key + '">' + key + '</a></li>');
-
-      var detail_page = '\
-      <div data-role="page" data-theme="b" id="detail-' + key + '" data-url="detail-' + key + '">\
-        <div data-role="header">\
-          <h1>' + key + '</h1>\
-        </div>\
-        <div data-role="content">\
-          <div data-role="fieldcontain">\
-             <fieldset data-role="controlgroup">';
-               reduced_val = val.sort(function(){
-                 return Math.round(Math.random())-0.5;
-               }).slice(0, 5);
-               $.each(reduced_val, function(key2, val2){
-                detail_page += '\
-                <input type="checkbox" name="checkbox-' + key2 +'" id="checkbox-' + key2 + '" data-group="' + key + '" />\
-                <label for="checkbox-' + key2 + '" data-theme="c">' + val2 + '</label>';
-              });
-            detail_page += '</fieldset>\
-          </div>\
-        </div>\
-        <div data-role="footer">\
-          <h4>&copy; A. Alfarè &amp; M. Schmidt</h4>\
-        </div>\
-      </div>';
-      $(detail_page).appendTo('body');
-    });
-    $(items.join('')).appendTo('#mainlist');
-    $('#mainlist').listview('refresh');
-	}
-
   $('input[type="checkbox"]').live('change', function(e){
-    if ($('input[data-group=' + $(this).attr('data-group') + ']:checked').length == 5){
-      // play sound on bingo - add your sound file and uncomment next 2 lines
-      //$('#soundContainer').attr('src', 'music.mp3');
-      //document.getElementById('soundContainer').play();
+    if ($('input[data-group=' + $(this).attr('data-group') + ']:checked').length === 5){
+      // play sound on bingo - add your sound file 'music.mp3' to document root
+      $('#soundContainer').get(0).play();
     }
   });
 });
